@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using TShockAPI;
+using Microsoft.Xna.Framework;
+
 
 namespace StaffChatPlugin
 {

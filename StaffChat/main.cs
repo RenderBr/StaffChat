@@ -7,10 +7,11 @@ using System.Linq;
 using System.Reflection;
 using TerrariaApi.Server;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace StaffChatPlugin
 {
-    [ApiVersion(1, 19)]
+    [ApiVersion(2, 1)]
     public class StaffChat : TerrariaPlugin
     {
         public static bool[] Spying = new bool[255];
@@ -26,7 +27,7 @@ namespace StaffChatPlugin
         }
         public override string Author
         {
-            get { return "Ancientgods"; }
+            get { return "Ancientgods, maintained by Average"; }
         }
         public override string Name
         {
@@ -124,7 +125,7 @@ namespace StaffChatPlugin
                 args.Player.SendMessage("Invalid syntax! Syntax: /sinvite <player>", Color.Red);
                 return;
             }
-            var foundplr = TShock.Utils.FindPlayer(args.Parameters[0]);
+            var foundplr = TSPlayer.FindByNameOrID(args.Parameters[0]);
             if (foundplr.Count == 0)
             {
                 args.Player.SendMessage("Invalid player!", Color.Red);
@@ -133,9 +134,9 @@ namespace StaffChatPlugin
             {
                 args.Player.SendMessage(string.Format("More than one ({0}) player matched!", foundplr.Count), Color.Red);
             }
-            var plr = foundplr[0];
+            var plr = foundplr.First();
 
-            if (plr.Group.HasPermission(Permission.Chat) || InStaffChat[plr.Index])
+            if (TShock.Players[plr.Index].Group.HasPermission(Permission.Chat) || InStaffChat[plr.Index])
             {
                 args.Player.SendErrorMessage("This player is already in the staffchat!");
                 return;
@@ -162,7 +163,7 @@ namespace StaffChatPlugin
                 args.Player.SendMessage("Invalid syntax! Syntax: /skick <player>", Color.Red);
                 return;
             }
-            var foundplr = TShock.Utils.FindPlayer(args.Parameters[0]);
+            var foundplr = TSPlayer.FindByNameOrID(args.Parameters[0]);
             if (foundplr.Count == 0)
             {
                 args.Player.SendMessage("Invalid player!", Color.Red);
